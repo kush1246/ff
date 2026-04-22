@@ -9,13 +9,25 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['https://student-auth-frontend.onrender.com', 'http://localhost:3000'],
+  credentials: true
+}));
 app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('MongoDB connected successfully'))
-.catch((err) => console.log('MongoDB connection error:', err));
+// Connect to MongoDB with retry logic
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    console.log('MongoDB connected successfully');
+  } catch (error) {
+    console.log('MongoDB connection error:', error);
+    // Retry connection after 5 seconds
+    setTimeout(connectDB, 5000);
+  }
+};
+
+connectDB();
 
 // Import routes
 const authRoutes = require('./routes/auth');
