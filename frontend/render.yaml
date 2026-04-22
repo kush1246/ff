@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: student-auth-frontend
+    env: static
+    plan: free
+    buildCommand: cd frontend && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        sync: false

@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/student');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/student`);
       setUser(response.data.student);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/login`, {
         email,
         password
       });
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password, course) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/register', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/register`, {
         name,
         email,
         password,
@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
 
   const updatePassword = async (currentPassword, newPassword) => {
     try {
-      await axios.put('http://localhost:5000/api/update-password', {
+      await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/update-password`, {
         currentPassword,
         newPassword
       });
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateCourse = async (course) => {
     try {
-      await axios.put('http://localhost:5000/api/update-course', { course });
+      await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/update-course`, { course });
       setUser({ ...user, course });
       return { success: true };
     } catch (error) {
